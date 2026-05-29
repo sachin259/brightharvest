@@ -14,10 +14,18 @@ A simple, no-build website for the BrightHarvest youth social venture, with a
 
 A **burger menu on the left** is on every page (tap the green ☰ button top-left).
 
-## How to view the site
+## 🌐 Live site
+- Website: **https://sachin259.github.io/brightharvest/**
+- Admin panel: **https://sachin259.github.io/brightharvest/admin.html**
+- Code: **https://github.com/sachin259/brightharvest** (public)
+
+The live site is hosted free on **GitHub Pages** and rebuilds automatically
+(~1 minute) every time changes are pushed to the `main` branch — see
+[Publishing your changes](#publishing-your-changes-so-everyone-can-see-them).
+
+## How to view the site locally
 Just **double-click `index.html`** — it opens in your browser. No installation,
-no server needed. (For the live public version, upload the whole folder to any
-free static host like GitHub Pages, Netlify or Cloudflare Pages.)
+no server needed. This is handy for previewing before you publish.
 
 ---
 
@@ -32,23 +40,41 @@ free static host like GitHub Pages, Netlify or Cloudflare Pages.)
    Fundraisers, Contact**.
 4. Use the forms to **add**, **edit** or **delete** entries. You can add
    photos straight from your phone or computer (keep them under 1.5 MB).
-4. Everything you change is **saved automatically in your browser**, so you can
+5. Everything you change is **saved automatically in your browser**, so you can
    click **👁️ Preview site** to see exactly how it looks.
 
 ### Publishing your changes so everyone can see them
-Your edits start out only on *your* device. To make them live for all visitors:
+Your edits start out only on *your* device. To make them live for all visitors,
+there are two steps: **export** the content, then **push** it to GitHub.
 
+**Step A — export from the admin panel**
 1. In the admin panel, click **⬇️ Export site content**. This downloads a file
    called **`seed-data.js`**.
-2. Put that file into the **`assets`** folder, replacing the old `seed-data.js`.
-3. Re-upload the site (or just re-open it). Done — everyone now sees the new
-   content.
+2. Put that file into the **`assets`** folder of this project, replacing the
+   old `assets/seed-data.js`.
+
+**Step B — push it to the live site**
+
+Open the Terminal in this project folder and run these three commands:
+
+```bash
+git add -A
+git commit -m "update site content"
+git push
+```
+
+Wait about a minute and the live site
+(https://sachin259.github.io/brightharvest/) updates automatically. ✅
 
 > 💡 Think of it like saving a document: editing in the panel is your *draft*;
-> **Export → replace the file** is hitting *publish*.
+> **Export → replace `seed-data.js` → `git push`** is hitting *publish*.
 
 If you ever want to throw away your unsaved drafts and go back to the published
 version, click **↩️ Discard my changes** in the admin panel.
+
+> 🛟 Not comfortable with the Terminal? You can also upload the new
+> `seed-data.js` straight on GitHub: open the repo → `assets/` folder →
+> click `seed-data.js` → the pencil ✏️ (or "Upload files") → commit. Same result.
 
 ---
 
