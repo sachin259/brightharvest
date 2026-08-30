@@ -144,7 +144,7 @@
   /* ---------- passcode lock (soft deterrent, not real security) ---------- */
   const PASS_KEY = "bh_admin_pass";
   const UNLOCK_FLAG = "bh_admin_unlocked";
-  const DEFAULT_PASS = "***";          // change this on first login!
+  const DEFAULT_PASS = "harvest2026";          // change this on first login!
   const getPass = () => localStorage.getItem(PASS_KEY) || DEFAULT_PASS;
   const setPass = (p) => localStorage.setItem(PASS_KEY, p);
   const isUnlocked = () => { try { return sessionStorage.getItem(UNLOCK_FLAG) === "1"; } catch (e) { return false; } };
@@ -168,7 +168,7 @@
           </div>
           <button class="btn" type="submit">Unlock</button>
         </form>
-        ${usingDefault ? `<p class="hint" style="margin-top:16px">Tip: the starting passcode is <b>${esc(DEFAULT_PASS)}</b>. Change it after you log in (Site & Home tab).</p>` : ""}
+        ${usingDefault ? `<p class="hint" style="margin-top:16px">Tip: the starting passcode is <b>${esc()}</b>. Change it after you log in (Site & Home tab).</p>` : ""}
       </div>`;
     const form = document.getElementById("lockForm");
     form.addEventListener("submit", (e) => {
