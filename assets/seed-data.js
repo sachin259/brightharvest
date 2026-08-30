@@ -22,15 +22,15 @@ window.BH_SEED = {
         "label": "Meals served"
       },
       {
-        "value": "85",
+        "value": "30",
         "label": "Kids in our classes"
       },
       {
-        "value": "30",
+        "value": "1",
         "label": "Student volunteers"
       },
       {
-        "value": "6",
+        "value": "1",
         "label": "Partner schools"
       }
     ]
