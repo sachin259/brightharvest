@@ -45,6 +45,10 @@ const BH = (() => {
       .map((p) => `<p>${esc(p).replace(/\n/g, "<br>")}</p>`)
       .join("");
   }
+  function excerpt(text, len = 140) {
+    const clean = String(text || "").replace(/\s+/g, " ").trim();
+    return clean.length > len ? clean.slice(0, len).trim() + "…" : clean;
+  }
   function fmtDate(d) {
     if (!d) return "";
     const dt = new Date(d + "T00:00:00");
@@ -261,13 +265,14 @@ const BH = (() => {
     const c = getContent();
     const items = c.blogs || [];
     const el = document.getElementById("page");
-    const cards = items.map((b) =>
-      `<div class="card">
+    const cards = items.map((b, i) =>
+      `<div class="card blog-card" data-index="${i}" role="button" tabindex="0" aria-label="Read full post: ${esc(b.title)}">
         <div class="thumb">${b.image ? `<img src="${esc(b.image)}" alt="">` : "📝"}</div>
         <div class="body">
           <div class="meta"><span>${fmtDate(b.date)}</span>${b.author ? `<span class="tag">${esc(b.author)}</span>` : ""}</div>
           <h3>${esc(b.title)}</h3>
-          ${paras(b.body)}
+          <p>${esc(excerpt(b.body))}</p>
+          <span class="read-more">Read more →</span>
         </div>
       </div>`).join("");
     el.innerHTML = `
@@ -275,6 +280,52 @@ const BH = (() => {
         <div class="section-head"><span class="eyebrow">Blogs</span><h2>Stories from our journey</h2></div>
         ${items.length ? `<div class="grid">${cards}</div>` : emptyState("No blog posts yet — check back soon!")}
       </div></section>`;
+
+    if (!items.length) return;
+
+    // Build the expanded-post modal once, then reuse it for every card.
+    let modal = document.getElementById("blogModal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.className = "modal-overlay";
+      modal.id = "blogModal";
+      modal.innerHTML = `
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="blogModalTitle">
+          <button class="modal-close" id="blogModalClose" aria-label="Close">×</button>
+          <div class="modal-thumb" id="blogModalThumb"></div>
+          <div class="modal-content">
+            <div class="meta" id="blogModalMeta"></div>
+            <h2 id="blogModalTitle"></h2>
+            <div class="modal-body" id="blogModalBody"></div>
+          </div>
+        </div>`;
+      document.body.appendChild(modal);
+
+      const close = () => modal.classList.remove("open");
+      document.getElementById("blogModalClose").addEventListener("click", close);
+      modal.addEventListener("click", (e) => { if (e.target === modal) close(); });
+      document.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+    }
+
+    function openModal(b) {
+      document.getElementById("blogModalTitle").textContent = b.title || "";
+      document.getElementById("blogModalMeta").innerHTML =
+        `<span>${fmtDate(b.date)}</span>${b.author ? `<span class="tag">${esc(b.author)}</span>` : ""}`;
+      document.getElementById("blogModalBody").innerHTML = paras(b.body);
+      const thumb = document.getElementById("blogModalThumb");
+      thumb.innerHTML = b.image ? `<img src="${esc(b.image)}" alt="">` : "";
+      thumb.style.display = b.image ? "" : "none";
+      modal.classList.add("open");
+    }
+
+    el.querySelectorAll(".blog-card").forEach((card) => {
+      const b = items[Number(card.dataset.index)];
+      const openThis = () => openModal(b);
+      card.addEventListener("click", openThis);
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openThis(); }
+      });
+    });
   }
 
   function renderEvents() {
